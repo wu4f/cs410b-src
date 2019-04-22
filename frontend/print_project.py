@@ -4,7 +4,6 @@ from protobuf.project_node_pb2 import *
 import base64
 import requests
 import json
-import urllib
 
 def getProjectNode(state,project_name):
     ''' Given a project name get a project node. '''
