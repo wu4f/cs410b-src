@@ -18,14 +18,14 @@ version: "2.1"
 services:
 
   settings-tp:
-    image: hyperledger/sawtooth-settings-tp:1.0
+    image: hyperledger/sawtooth-settings-tp:nightly
     container_name: sawtooth-settings-tp-default
     depends_on:
       - validator
     entrypoint: settings-tp -vv -C tcp://validator:4004
 
   validator:
-    image: hyperledger/sawtooth-validator:1.0
+    image: hyperledger/sawtooth-validator:nightly
     container_name: sawtooth-validator-default
     expose:
       - 4004
@@ -44,7 +44,7 @@ services:
         \""
 
   rest-api:
-    image: hyperledger/sawtooth-rest-api:1.0
+    image: hyperledger/sawtooth-rest-api:nightly
     container_name: sawtooth-rest-api-default
     ports:
       - "8008:8008"
@@ -53,7 +53,7 @@ services:
     entrypoint: sawtooth-rest-api -C tcp://validator:4004 --bind rest-api:8008
 
   shell:
-    image: hyperledger/sawtooth-all:1.0
+    image: hyperledger/sawtooth-shell:nightly
     container_name: sawtooth-shell-default
     depends_on:
       - rest-api
@@ -78,3 +78,4 @@ services:
       - validator
     entrypoint: |
      /taskledger/startup -vv tcp://validator:4004
+
