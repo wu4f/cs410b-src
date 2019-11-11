@@ -57,6 +57,8 @@ def _create_project(payload, signer, timestamp, state):
         that name, and the txn family.  A project name must be unique, the 
         txn will fail if it is not.  
     '''
+    # DELETE THIS PRINT STATEMENT ONCE FULFILLED
+    print("_create_project(..) NOT IMPLEMENTED")
     pass
 
 
@@ -67,6 +69,8 @@ def _create_task(payload, signer, timestamp, state):
         name and the task name. Each task name must be unique in the
         project.
     '''
+    # DELETE THIS PRINT STATEMENT ONCE FULFILLED
+    print("_create_task(..) NOT IMPLEMENTED")
     pass
 
 
@@ -78,6 +82,8 @@ def _progress_task(payload, signer, timestamp, state):
         task's stage from its current stage to the next if possible.
         It is not possible to progress beyond DONE. 
     '''
+    # DELETE THIS PRINT STATEMENT ONCE FULFILLED
+    print("_progress_task(..) NOT IMPLEMENTED")
     pass
 
 
@@ -88,6 +94,8 @@ def _edit_task(payload, signer, timestamp, state):
         Only an authorized contributor can make changes, and 
         the project/task must exist.
     '''
+    # DELETE THIS PRINT STATEMENT ONCE FULFILLED
+    print("_edit_task(..) NOT IMPLEMENTED")
     pass
 
 
@@ -97,6 +105,8 @@ def _add_user(payload, signer, timestamp, state):
         Payload should include project name and the new public key
         Transaction must be signed by project owner (0th element of authorized keys list)
     '''
+    # DELETE THIS PRINT STATEMENT ONCE FULFILLED
+    print("_add_user(..) NOT IMPLEMENTED")
     pass
 
 
@@ -106,17 +116,23 @@ def _unpack_transaction(transaction, state):
     handler function (with the latter two determined by the constant
     TYPE_TO_ACTION_HANDLER table.
     '''
+    # DELETE THIS PRINT STATEMENT ONCE FULFILLED
+    print("_unpack_transaction(..) NOT IMPLEMENTED")
     pass
 
 
 
 def _get_container(state, address):
     '''Returns the container at a given address from state'''
+    # DELETE THIS PRINT STATEMENT ONCE FULFILLED
+    print("_get_container(..) NOT IMPLEMENTED")
     pass
 
 
 def _set_container(state, address, container):
     '''Sets the state at a certain address to a given container'''
+    # DELETE THIS PRINT STATEMENT ONCE FULFILLED
+    print("_set_container(..) NOT IMPLEMENTED")
     pass
 
 
