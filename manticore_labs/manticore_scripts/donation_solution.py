@@ -40,10 +40,10 @@ contract_account = m.solidity_create_contract(
 # someFunction(uint256,uint256)
 # to allow manticore to call any function, we'll setup the symbolic execution engine so that it has 4 free bytes to play with
 sym_args = m.make_symbolic_buffer(4)
-# now, we contrain the execution with a transaction
+# now, we constrain the execution with a transaction
 m.transaction(caller=user_account, address=contract_account.address, data=sym_args, value=0, gas=gas)
 
-# for states that are still running (haven't reverted due to our transaction contraint) let's iterate through them and see if any allow for an exploit
+# for states that are still running (haven't reverted due to our transaction constraint) let's iterate through them and see if any allow for an exploit
 for state in m.running_states:
     world = state.platform
     # stealing back all the ether is a good way of proving that an exploit exists
