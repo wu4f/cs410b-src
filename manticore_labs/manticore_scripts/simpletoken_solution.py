@@ -16,7 +16,7 @@ import sha3
 
 from_address = int(sys.argv[1], 16) if len(sys.argv)>1 else "<your address here>"
 si_level_address = int(sys.argv[2], 16) if len(sys.argv)>2 else "<SI ctf level address>"
-sol_file = sys.argv[3] if len(sys.argv)>3 else "/home/auditor/SI_ctf_levels/SimpleToken.sol"
+sol_file = sys.argv[3] if len(sys.argv)>3 else "../SI_ctf_levels/SimpleToken.sol"
 gas = 100000
 contract_balance = ???
 attacker_balance = ??? # this doesn't have to be your actual wallet balance, but must be enough to trigger the initial overflow exploit (10 szabo)

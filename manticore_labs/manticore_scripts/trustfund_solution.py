@@ -36,7 +36,7 @@ from_address = int(sys.argv[1], 16) if len(sys.argv)>1 else "<your address here>
 si_level_address = int(sys.argv[2], 16) if len(sys.argv)>2 else "<SI ctf level address>"
 # TrustFund launcher 0x2f5551674A7c8CB6DFb117a7F2016C849054fF80
 contract_creator_address = int(sys.argv[3], 16) if len(sys.argv)>3 else "<contract creator address>"
-sol_file = sys.argv[4] if len(sys.argv)>4 else "/home/auditor/SI_ctf_levels/TrustFund.sol"
+sol_file = sys.argv[4] if len(sys.argv)>4 else "../SI_ctf_levels/TrustFund.sol"
 gas = 4000000
 
 # read in the victim contract source
