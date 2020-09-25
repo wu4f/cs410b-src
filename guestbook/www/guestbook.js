@@ -23,10 +23,10 @@ var Guestbook = new web3.eth.Contract(GuestbookABI,'<FMI>');
 
 /* ================================================================================*/
 /* Update the UI with current wallet account address when called */
-async function getAccount(accountID) {
+async function updateAccount() {
   const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
   const account = accounts[0];
-  const accountNode = document.getElementById(accountID);
+  const accountNode = document.getElementById("account");
   if (accountNode.firstChild)
     accountNode.firstChild.remove();
   var textnode = document.createTextNode(account);
@@ -35,20 +35,23 @@ async function getAccount(accountID) {
 
 /* ================================================================================*/
 /* Update the UI with current minimum bounty when called */
-async function getBounty(bountyID){
+async function updateBounty(){
   const bounty = await Guestbook.methods.bounty().call();
-  const bountyNode = document.getElementById(bountyID);
+  updateBountyUI(bounty); 
+}
+
+function updateBountyUI(value){
+  const bountyNode = document.getElementById("bounty");
   if (bountyNode.firstChild)
     bountyNode.firstChild.remove();
-  var textnode = document.createTextNode(bounty + " Wei");
+  var textnode = document.createTextNode(value + " Wei");
   bountyNode.appendChild(textnode);
-  return bounty;
 }
 
 /* ================================================================================*/
 /* Update the UI with Guestbook entries from contract when called */
-async function getEntries(entriesID){
-  const entriesNode = document.getElementById(entriesID);
+async function updateEntries(){
+  const entriesNode = document.getElementById("entries");
 
   while (entriesNode.firstChild) {
     entriesNode.firstChild.remove();
@@ -85,7 +88,8 @@ async function getEntries(entriesID){
 /* Register a handler for when contract emits an Entry event after Guestbook is
  * signed to reload the page */
 Guestbook.events.Entry().on("data", function(event) {
-	window.location.reload();
+  updateBountyUI(event.returnValues.value); 
+  updateEntries();
 });
 
 /* Issue a transaction to sign the guestbook based on form field values */
