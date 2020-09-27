@@ -38,7 +38,7 @@ def __init__():
         self.gb[i].email = "owner@pdx.edu"
         self.gb[i].message = "Hello!"
         self.gb[i].date = block.timestamp
-        self.gb[i].bounty_entry = i
+        self.gb[i].bounty_entry = convert(i*10,uint256)
 
 # Finds the minimum bounty value and updates the storage variable for it
 @internal
