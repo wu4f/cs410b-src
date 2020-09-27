@@ -85,13 +85,6 @@ async function updateEntries(){
 
 }
 
-/* Register a handler for when contract emits an Entry event after Guestbook is
- * signed to reload the page */
-Guestbook.events.Entry().on("data", function(event) {
-  updateBountyUI(event.returnValues.value);
-  updateEntries();
-});
-
 /* Issue a transaction to sign the guestbook based on form field values */
 async function sign() {
   const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
@@ -109,6 +102,13 @@ async function sign() {
   };
   await Guestbook.methods.sign(name, email, message).send(transactionParameters);
 };
+
+/* Register a handler for when contract emits an Entry event after Guestbook is
+ * signed to reload the page */
+Guestbook.events.Entry().on("data", function(event) {
+  updateBountyUI(event.returnValues.value);
+  updateEntries();
+});
 
 /* Create submission button.  Then, register an event listener on it to invoke sign
  * transaction when clicked */
