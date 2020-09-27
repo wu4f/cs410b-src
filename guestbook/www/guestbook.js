@@ -37,7 +37,7 @@ async function updateAccount() {
 /* Update the UI with current minimum bounty when called */
 async function updateBounty(){
   const bounty = await Guestbook.methods.bounty().call();
-  updateBountyUI(bounty); 
+  updateBountyUI(bounty);
 }
 
 function updateBountyUI(value){
@@ -88,7 +88,7 @@ async function updateEntries(){
 /* Register a handler for when contract emits an Entry event after Guestbook is
  * signed to reload the page */
 Guestbook.events.Entry().on("data", function(event) {
-  updateBountyUI(event.returnValues.value); 
+  updateBountyUI(event.returnValues.value);
   updateEntries();
 });
 
