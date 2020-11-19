@@ -1,13 +1,5 @@
-'''
-This first level is a simple script for a simple exploit
-Please read through this file and understand how the script
-    sets up the symbolic execution framework
-You'll have to provide your own wallet address and ctf level address
-    on the command or by replacing the strings in this file
-'''
 # Import Manticore's EVM supporting symbolic execution
 from manticore.ethereum import ManticoreEVM
-import binascii
 import sys
 
 # Parse arguments
