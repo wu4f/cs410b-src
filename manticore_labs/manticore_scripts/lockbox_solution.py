@@ -65,6 +65,7 @@ m.transaction(
     value=0,
     gas=gas
 )
+
 # Symbolically execute program to find an exploit that obtains our funds back.
 for state in m.running_states:
     world = state.platform
