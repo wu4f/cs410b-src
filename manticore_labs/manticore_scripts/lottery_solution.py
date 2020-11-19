@@ -67,7 +67,6 @@ for state in m.running_states:
       state.constraints.add(world.get_balance(user_account.address) == contract_balance + msg_value)
       conc_args = state.solve_one(sym_args)
       # Print out our transaction to send to win
-      print("eth.sendTransaction({data:\"0x"+binascii.hexlify(conc_args).decode('utf-8')+"\", from:\""+ hex(from_address) + "\", to:\""+hex(si_level_address)+"\", value:"+str(msg_value)+", gas:"+str(gas)+"})")
-      print(f'''eth.sendTransaction({{data:"0x{conc_args.hex()}", from:"{hex(from_address)}", to:"{hex(si_level_address)}", value: {value}, gas:{gas}}})''')
+      print(f'''eth.sendTransaction({{data:"0x{conc_args.hex()}", from:"0x{from_address:040x}", to:"0x{si_level_address:040x}", value:{msg_value}, gas:{gas}}})''')
       sys.exit(0)
     print('No state found')
