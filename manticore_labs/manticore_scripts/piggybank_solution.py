@@ -1,8 +1,7 @@
 '''
 In this level, we'll have to know the contract balance of the piggy bank
-We know that this is .3 ether, but we have to convert that to wei
-(hint: this is done in the first manticore script with .5 ether)
-There's one more blank (???) that you need to fill in which is the number of bytes in a 256bit uint.
+in Wei.  There's one more blank (???) that you need to fill in which is the number of
+bytes in a 256bit uint.
 You'll also need to fill in your wallet/ctf address in this file or on the command line (like the previous level)
 '''
 
