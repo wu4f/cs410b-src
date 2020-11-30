@@ -3,7 +3,7 @@ To solve this level, we'll need to fill in several contract values
 similar to prior levels, including the amount that is needed to play
 the lottery
 '''
-from manticore.ethereum import ABI, ManticoreEVM
+from manticore.ethereum import ManticoreEVM
 import sys
 
 # Parse arguments
