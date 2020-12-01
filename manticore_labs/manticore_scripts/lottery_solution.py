@@ -21,11 +21,11 @@ contract_balance = ???
 # Set the amount of ETH we need to send in our transaction (msg.value) to play.
 msg_value = ???
 
-# read in the contract source
+# Read in the contract source
 with open(sol_file, "r") as f:
     contract_src = f.read()
 
-# instantiate manticore's Ethereum Virtual Machine
+# Instantiate manticore's Ethereum Virtual Machine
 m = ManticoreEVM()
 # m.verbosity(0)
 
