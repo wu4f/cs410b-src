@@ -3,7 +3,7 @@ To solve this level, we'll need to fill in several contract values
 similar to prior levels, including the amount that is needed to play
 the lottery
 '''
-from manticore.ethereum import ABI, ManticoreEVM
+from manticore.ethereum import ManticoreEVM
 import sys
 
 # Parse arguments
@@ -21,11 +21,11 @@ contract_balance = ???
 # Set the amount of ETH we need to send in our transaction (msg.value) to play.
 msg_value = ???
 
-# read in the contract source
+# Read in the contract source
 with open(sol_file, "r") as f:
     contract_src = f.read()
 
-# instantiate manticore's Ethereum Virtual Machine
+# Instantiate manticore's Ethereum Virtual Machine
 m = ManticoreEVM()
 # m.verbosity(0)
 
