@@ -55,7 +55,7 @@ def update_bounty():
 @external
 @payable
 def sign(name: String[32], email: String[32], message: String[100]):
-    assert msg.value > self.bounty
+    assert msg.value > self.bounty, "ETH sent in msg.value not more than bounty"
     for i in range(ENTRIES):
         if self.gb[i].bounty_entry == self.bounty:
             self.gb[i].signer = msg.sender
